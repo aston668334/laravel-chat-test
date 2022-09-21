@@ -49,6 +49,7 @@ class MessageController extends Controller
                 '_id'=>'required'
             ];
 
+            
             $this->validate($request, $rules);
 
             $body = $request->input('message-data');
