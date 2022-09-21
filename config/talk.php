@@ -8,7 +8,7 @@ return [
 
 
     'broadcast' => [
-        'enable' => true,
+        'enable' => false,
         'app_name' => 'talk-example',
         'pusher' => [
             'app_id'        => env('PUSHER_APP_ID', ''),
