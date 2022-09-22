@@ -36,8 +36,6 @@ class MessageController extends Controller
             $messages = $conversations->messages;
         }
 
-
-
         if (count($messages) > 0) {
             $messages = $messages->sortBy('id');
         } 
@@ -65,10 +63,10 @@ class MessageController extends Controller
 
             $this->validate($request, $rules);
 
-            $body = Crypt::encryptString($request->input('message-data'));
+            $body = $request->input('message-data');
             $userId = $request->input('_id');
 
-            if ($message = Talk::sendMessageByUserId($userId, $body)) {
+            if ($message = Talk::sendMessageByUserId($userId, Crypt::encryptString($body))) {
                 $html = view('ajax.newMessageHtml', compact('message'))->render();
                 return response()->json(['status'=>'success', 'html'=>$html], 200);
             }
