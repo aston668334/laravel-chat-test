@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Nahid\Talk\Facades\Talk;
 use Auth;
 use View;
+use Illuminate\Support\Facades\Crypt;
 
 class MessageController extends Controller
 {
@@ -27,6 +28,7 @@ class MessageController extends Controller
         $conversations = Talk::getMessagesByUserId($id, 0, 50);
         $user = '';
         $messages = [];
+        $decrypted_messages = [];
         if(!$conversations) {
             $user = User::find($id);
         } else {
@@ -34,9 +36,20 @@ class MessageController extends Controller
             $messages = $conversations->messages;
         }
 
+
+
         if (count($messages) > 0) {
             $messages = $messages->sortBy('id');
-        }
+        } 
+
+        // foreach ($messages as $encryptedValue) {
+        //     try {
+        //         $encryptedValue = Crypt::decryptString($encryptedValue -> message);
+        //         array_push($decrypted_messages,$encryptedValue);
+        //     } catch (DecryptException $e) {
+        //         //
+        //     }
+        // }
 
         return view('messages.conversations', compact('messages', 'user'));
     }
@@ -49,10 +62,10 @@ class MessageController extends Controller
                 '_id'=>'required'
             ];
 
-            
+
             $this->validate($request, $rules);
 
-            $body = $request->input('message-data');
+            $body = Crypt::encryptString($request->input('message-data'));
             $userId = $request->input('_id');
 
             if ($message = Talk::sendMessageByUserId($userId, $body)) {

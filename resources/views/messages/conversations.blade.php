@@ -13,7 +13,7 @@
                             <a href="#" class="talkDeleteMessage" data-message-id="{{$message->id}}" title="Delete Message"><i class="fa fa-close"></i></a>
                         </div>
                         <div class="message other-message float-right">
-                            {{$message->message}}
+                            {{Crypt::decryptString($message->message)}}
                         </div>
                     </li>
                 @else
