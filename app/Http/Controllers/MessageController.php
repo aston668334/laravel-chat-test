@@ -8,6 +8,7 @@ use Nahid\Talk\Facades\Talk;
 use Auth;
 use View;
 use Illuminate\Support\Facades\Crypt;
+use Illuminate\Encryption\Encrypter;
 
 class MessageController extends Controller
 {
